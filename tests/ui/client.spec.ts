@@ -464,3 +464,58 @@ test('sidebar groups devices per vendor and quick actions follow the per-vendor 
   await checkQueries(['设备信息','端口状态','当前配置','LLDP 邻居'])
   await expect(page.getByRole('button',{name:'备份当前配置',exact:true})).toBeEnabled()
 })
+
+test('browser preview loads project fonts and favicon without 4xx',async({page})=>{
+  const fontStatuses:number[]=[],failures:string[]=[]
+  page.on('response',response=>{
+    const path=new URL(response.url()).pathname
+    if(path.endsWith('.woff2'))fontStatuses.push(response.status())
+    if(response.status()>=400)failures.push(`${response.status()} ${path}`)
+  })
+  await page.goto('/')
+  await page.evaluate(()=>document.fonts.ready.then(()=>true))
+  await expect.poll(()=>fontStatuses.length).toBeGreaterThan(0)
+  expect(fontStatuses.every(status=>status===200)).toBe(true)
+  expect(failures).toEqual([])
+  expect(await page.evaluate(()=>document.fonts.check('16px "Noto Sans SC Variable"'))).toBe(true)
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href','/favicon.ico')
+  const favicon=await page.request.get('/favicon.ico')
+  expect(favicon.status()).toBe(200)
+  expect((await favicon.body()).subarray(0,4).toString('hex')).toBe('00000100')
+})
+
+test('add cancel, device search and settings open/close leave no side effects',async({page})=>{
+  await bridge(page,true,true);await page.goto('/')
+  await page.evaluate(()=>{
+    const w=window as any,original=w.__TAURI_INTERNALS__.invoke
+    w.__uiCalls=[]
+    w.__TAURI_INTERNALS__.invoke=(cmd:string,args:any)=>{w.__uiCalls.push(cmd);return original(cmd,args)}
+  })
+  // Cancel the add-device form without saving.
+  await page.getByRole('button',{name:'添加设备',exact:true}).click()
+  await page.getByLabel('设备名称',{exact:true}).fill('TEMP-DEVICE')
+  await page.getByRole('button',{name:'取消',exact:true}).click()
+  await expect(page.getByRole('dialog')).not.toBeVisible()
+  // Reopening and closing the form keeps the draft but never creates a device.
+  await page.getByRole('button',{name:'添加设备',exact:true}).click()
+  await page.getByRole('button',{name:'关闭添加设备'}).click()
+  await expect(page.getByRole('dialog')).not.toBeVisible()
+  // Search filters the existing list and clears back to all devices.
+  const search=page.getByLabel('搜索设备',{exact:true})
+  await page.locator('.command-search').click()
+  await expect(search).toBeFocused()
+  await search.fill('LAB-B')
+  await expect(page.locator('.device-list .device')).toHaveCount(1)
+  await expect(page.getByRole('button',{name:/LAB-FIXTURE 华为/})).toHaveCount(0)
+  await search.fill('no-such-device')
+  await expect(page.getByText('未找到匹配的设备')).toBeVisible()
+  await search.fill('')
+  await expect(page.locator('.device-list .device')).toHaveCount(2)
+  // Settings open and close without saving model configuration.
+  await page.getByRole('button',{name:'模型设置',exact:true}).click()
+  await expect(page.getByRole('dialog',{name:'模型设置'})).toBeVisible()
+  await page.getByRole('button',{name:'关闭模型设置'}).click()
+  await expect(page.getByRole('dialog')).not.toBeVisible()
+  const calls=await page.evaluate(()=>(window as any).__uiCalls)
+  expect(calls.filter((cmd:string)=>['device_add','model_config_save','terminal_open','config_execute_approved','ai_autonomous'].includes(cmd))).toEqual([])
+})

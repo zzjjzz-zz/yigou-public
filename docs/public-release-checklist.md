@@ -51,7 +51,7 @@ printf 'Reviewed export: %s\n' "$EXPORT"
 
 - 导出目录没有原仓库的 `.git` 历史。新仓库从一个新的初始提交开始，提交作者须使用自己已配置的公开身份或平台隐私邮箱。
 - 检查 `git archive HEAD` 对应的提交及导出文件清单，确认无真实密码、密钥、证书、设备配置、私有测试工件；使用 Gitleaks（密钥扫描工具）扫描新的导出仓库。
-- 从导出目录执行锁文件安装、Python/Rust/前端测试及构建，记录成功和未执行项。依赖私有实验室的 Windows 原生设备验收不包含在公开版本中。
+- 从导出目录执行锁文件安装、Python/Rust/前端测试及构建，记录成功和未执行项。隔离测试副本必须在自身 `app/` 内执行 `pnpm --dir app install --frozen-lockfile`；禁止用目录 junction/符号链接把其他检出的 `app/node_modules` 链入副本（Vite 会以 403 拒绝项目外字体，且测试可能误报通过）。不得通过扩大 Vite `fs.allow` 或放宽 CSP 来绕过。依赖私有实验室的 Windows 原生设备验收不包含在公开版本中。
 - 核对 `LICENSES/dependency-inventory.json` 与三份锁文件的哈希，并处理 [许可证待审清单](../LICENSES/PRE-RELEASE-REVIEW.md)。公开源码与发布安装包应分别核对许可义务。
 - 新仓库设置受保护的默认分支、必要的状态检查与私密漏洞报告渠道。工作流文件不代表这些平台设置已经启用。
 - 未完成真实厂商设备、正式 Windows 安装包和在线模型验收前，不得宣传为生产网络已验收版本。
