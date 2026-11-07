@@ -1,5 +1,6 @@
-// Verify that Tauri/WebView2 loads licensed fonts from same-origin resources.
-// Small WOFF2 data URLs are not permitted under the restricted font-src CSP.
+// Verify that Tauri/WebView2 loads licensed fonts and the preview favicon
+// from same-origin resources. Small WOFF2 data URLs are not permitted under
+// the restricted font-src CSP.
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve, basename } from "node:path";
@@ -26,3 +27,10 @@ const csp = configuration?.app?.security?.csp || "";
 assert.match(csp, /font-src\s+'self'/, "App must explicitly allow same-origin fonts");
 assert.doesNotMatch(csp, /font-src[^;]*data:/, "Font CSP should not allow inlined data URLs");
 console.log("FONT_RESOURCES_PASS: " + noto.length + " Chinese subsets + " + mono.length + " monospace subsets; all referenced files present");
+
+const favicon = join(root, "app", "dist", "favicon.ico");
+assert.ok(existsSync(favicon), "Missing built favicon resource");
+assert.deepEqual([...readFileSync(favicon).subarray(0, 4)], [0, 0, 1, 0], "Built favicon is not an ICO file");
+const builtHtml = readFileSync(join(root, "app", "dist", "index.html"), "utf8");
+assert.match(builtHtml, /<link rel="icon"[^>]*href="\/favicon\.ico"/, "Built HTML does not reference the favicon");
+console.log("FAVICON_RESOURCE_PASS: app/dist/favicon.ico");

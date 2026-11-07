@@ -65,6 +65,8 @@ YIGOU_CHROMIUM=/path/to/chrome pnpm --dir app test
 bash scripts/build-linux.sh
 ```
 
+浏览器 E2E 也可在独立副本中运行，但副本必须自包含：先在副本自己的 `app/` 中按 `app/pnpm-lock.yaml` 执行 `pnpm --dir app install --frozen-lockfile`，再运行测试。**不要**用目录 junction 或符号链接把另一个检出的 `app/node_modules` 链入副本。Vite 开发服务器只读取项目根内的文件，会把这类项目外字体请求以 403 拒绝，而测试可能因回退字体仍然“通过”。修复方式是安装项目内依赖，不得扩大 `server.fs.allow` 或放宽 CSP；`app/playwright.config.ts` 检测到 `app/node_modules` 解析到副本外时会直接报错。浏览器页签图标来自 `app/public/favicon.ico`，由 `app/src-tauri/icons/icon.ico` 复制，生产构建将其复制到 `dist` 并由构建检查确认存在。
+
 Linux 安装包产物位于 `builds/target/release/bundle/deb/`。包含冻结后的 Python 执行程序，不要求用户安装 Python/uv。系统仍需 GTK/WebKitGTK、Git 和系统凭据库。包内的第三方依赖版本清单见 `LICENSES/`。
 
 ### Windows 64 位（在 Linux 上交叉打包）
