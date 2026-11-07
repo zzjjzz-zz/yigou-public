@@ -3,6 +3,12 @@ name: Build Windows x64 NSIS
 "on":
   push:
     branches: [main]
+    paths:
+      - '.github/workflows/build-windows.yml'
+      - 'app/**'
+      - 'worker/**'
+      - 'scripts/**'
+      - 'LICENSES/**'
   workflow_dispatch:
 
 concurrency:
@@ -32,8 +38,6 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '24'
-          cache: pnpm
-          cache-dependency-path: app/pnpm-lock.yaml
 
       - name: Set up Python 3.12 and uv
         uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3

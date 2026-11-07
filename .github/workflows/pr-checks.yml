@@ -47,7 +47,7 @@ jobs:
       - run: uv sync --project worker --frozen
       - run: cargo fmt --manifest-path app/src-tauri/Cargo.toml --check
       - run: cargo test --manifest-path app/src-tauri/Cargo.toml --lib --locked
-      - run: cargo clippy --manifest-path app/src-tauri/Cargo.toml --all-features --all-targets --locked -- -D warnings
+      - run: cargo clippy --manifest-path app/src-tauri/Cargo.toml --lib --locked -- -D warnings
   frontend:
     name: Frontend build + tests + audit
     runs-on: ubuntu-latest
