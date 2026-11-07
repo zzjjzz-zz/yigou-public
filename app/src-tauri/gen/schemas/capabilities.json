@@ -1,0 +1,1 @@
+{"main":{"identifier":"main","description":"主窗口业务 IPC 与受控原生窗口控制，不授予 shell/fs 权限","local":true,"windows":["main"],"permissions":["core:default","core:window:allow-minimize","core:window:allow-toggle-maximize","core:window:allow-close","core:window:allow-start-dragging"]}}

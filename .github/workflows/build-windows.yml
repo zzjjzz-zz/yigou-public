@@ -1,0 +1,124 @@
+name: Build Windows x64 NSIS
+
+"on":
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: build-windows-x64-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows-x64:
+    name: Windows x64 NSIS installer
+    runs-on: windows-2025
+    timeout-minutes: 90
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm 11
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: '11'
+
+      - name: Set up Node 24
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: pnpm
+          cache-dependency-path: app/pnpm-lock.yaml
+
+      - name: Set up Python 3.12 and uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: '3.12'
+          enable-cache: true
+          cache-dependency-glob: worker/uv.lock
+
+      - name: Set up Rust 1.99.0
+        uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+        with:
+          toolchain: 1.99.0
+
+      - name: Install frontend dependencies
+        run: pnpm --dir app install --frozen-lockfile
+
+      - name: Sync locked Python 3.12 worker dependencies
+        run: |
+          uv lock --project worker --check --locked
+          uv sync --project worker --frozen --group dev --python 3.12
+
+      - name: Build Windows sidecar with PyInstaller
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force -Path builds/windows/worker-dist, builds/windows/worker-build, builds/windows/worker-spec | Out-Null
+          worker/.venv/Scripts/python.exe -m PyInstaller `
+            --clean --noconfirm --onefile --name yigou-worker `
+            --paths worker/src `
+            --collect-all netmiko --collect-all ntc_templates `
+            --distpath builds/windows/worker-dist `
+            --workpath builds/windows/worker-build `
+            --specpath builds/windows/worker-spec `
+            worker/entry.py
+          if (-not (Test-Path builds/windows/worker-dist/yigou-worker.exe)) { throw 'PyInstaller did not produce yigou-worker.exe' }
+
+      - name: Stage Windows sidecar for Tauri
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force -Path app/src-tauri/binaries | Out-Null
+          $source = 'builds/windows/worker-dist/yigou-worker.exe'
+          $target = 'app/src-tauri/binaries/yigou-worker-x86_64-pc-windows-msvc.exe'
+          Copy-Item -LiteralPath $source -Destination $target -Force
+          $bytes = [System.IO.File]::ReadAllBytes((Resolve-Path $target))
+          if ($bytes.Length -lt 1048576) { throw 'Sidecar is unexpectedly small' }
+          if ($bytes[0] -ne 0x4D -or $bytes[1] -ne 0x5A) { throw 'Sidecar is not a Windows PE executable' }
+          Write-Host "SIDECAR_READY $target $($bytes.Length) bytes MZ"
+
+      - name: Build Tauri NSIS installer
+        run: pnpm --dir app tauri build --target x86_64-pc-windows-msvc --config src-tauri/tauri.windows.conf.json --ci
+        env:
+          CI: 'true'
+
+      - name: Collect installer and SHA256
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $targetRoot = 'app/src-tauri/target'
+          if (-not (Test-Path $targetRoot)) { throw "Tauri target directory not found: $targetRoot" }
+          $setup = Get-ChildItem -LiteralPath $targetRoot -Recurse -File -Filter '*-setup.exe' |
+            Where-Object { $_.FullName -match '[\\/]bundle[\\/]nsis[\\/]' } |
+            Sort-Object FullName |
+            Select-Object -First 1
+          if (-not $setup) { throw 'Tauri did not produce an NSIS *-setup.exe under bundle/nsis' }
+          if ($setup.Length -lt 1048576) { throw 'NSIS installer is unexpectedly small' }
+          New-Item -ItemType Directory -Force -Path builds/windows/artifact | Out-Null
+          Copy-Item -LiteralPath $setup.FullName -Destination "builds/windows/artifact/$($setup.Name)" -Force
+          $hash = (Get-FileHash -LiteralPath $setup.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $($setup.Name)" | Set-Content -LiteralPath builds/windows/artifact/SHA256SUMS.txt -Encoding ascii
+          $info = Get-Item "builds/windows/artifact/$($setup.Name)"
+          Write-Host "NSIS_READY $($setup.Name) $($info.Length) bytes SHA256=$hash"
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value @"
+          ## Yigou Windows x64 NSIS
+          - Installer: $($setup.Name)
+          - Size: $($info.Length) bytes
+          - SHA256: $hash
+          "@
+
+      - name: Upload installer and SHA256
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: yigou-windows-x64-nsis-${{ github.run_number }}
+          path: |
+            builds/windows/artifact/*-setup.exe
+            builds/windows/artifact/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 14

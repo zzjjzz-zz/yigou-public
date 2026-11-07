@@ -1,0 +1,29 @@
+data/*
+!data/.gitkeep
+backups/*
+!backups/.gitkeep
+builds/*
+!builds/.gitkeep
+**/node_modules/
+**/dist/
+**/target/
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+app/src-tauri/binaries/
+# Local environment/secrets: never commit real env files or key material.
+.env*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+# PyInstaller spec files are generated build artifacts (builds/windows/worker-spec).
+# Keep tracked Playwright specs: tests/ui/*.spec.ts must stay committable.
+*.spec
+!*.spec.ts
+test-results/
+playwright-report/

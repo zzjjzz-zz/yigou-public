@@ -1,0 +1,35 @@
+// Tabler Icons, MIT; Copyright (c) 2020-2026 Paweł Kuna.
+// Full notice: ../../LICENSES/texts/tabler-icons-MIT.txt. Exact SVG paths supplied by the OpenDesign v6.2 reference.
+// Static local data only; no model or device content is rendered as SVG markup.
+export const icons:Record<string,string> = {
+  "sparkles": "\n  <path d=\"M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2m-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6\" />\n",
+  "terminal-2": "\n  <path d=\"M8 9l3 3l-3 3\" />\n  <path d=\"M13 15l3 0\" />\n  <path d=\"M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -12\" />\n",
+  "topology-star-3": "\n  <path d=\"M10 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0\" />\n  <path d=\"M18 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0\" />\n  <path d=\"M10 5a2 2 0 1 0 -4 0a2 2 0 0 0 4 0\" />\n  <path d=\"M6 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0\" />\n  <path d=\"M18 19a2 2 0 1 0 -4 0a2 2 0 0 0 4 0\" />\n  <path d=\"M14 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0\" />\n  <path d=\"M22 12a2 2 0 1 0 -4 0a2 2 0 0 0 4 0\" />\n  <path d=\"M6 12h4\" />\n  <path d=\"M14 12h4\" />\n  <path d=\"M15 7l-2 3\" />\n  <path d=\"M9 7l2 3\" />\n  <path d=\"M11 14l-2 3\" />\n  <path d=\"M13 14l2 3\" />\n",
+  "server": "\n  <path d=\"M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-2\" />\n  <path d=\"M3 15a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v2a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3l0 -2\" />\n  <path d=\"M7 8l0 .01\" />\n  <path d=\"M7 16l0 .01\" />\n",
+  "router": "\n  <path d=\"M3 15a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2l0 -4\" />\n  <path d=\"M17 17l0 .01\" />\n  <path d=\"M13 17l0 .01\" />\n  <path d=\"M15 13l0 -2\" />\n  <path d=\"M11.75 8.75a4 4 0 0 1 6.5 0\" />\n  <path d=\"M8.5 6.5a8 8 0 0 1 13 0\" />\n",
+  "shield": "\n  <path d=\"M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3\" />\n",
+  "plus": "\n  <path d=\"M12 5l0 14\" />\n  <path d=\"M5 12l14 0\" />\n",
+  "x": "\n  <path d=\"M18 6l-12 12\" />\n  <path d=\"M6 6l12 12\" />\n",
+  "search": "\n  <path d=\"M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" />\n  <path d=\"M21 21l-6 -6\" />\n",
+  "chevron-right": "\n  <path d=\"M9 6l6 6l-6 6\" />\n",
+  "chevron-down": "\n  <path d=\"M6 9l6 6l6 -6\" />\n",
+  "moon": "\n  <path d=\"M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454l0 .008\" />\n",
+  "sun": "\n  <path d=\"M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\" />\n  <path d=\"M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7\" />\n",
+  "device-desktop": "\n  <path d=\"M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10\" />\n  <path d=\"M7 20h10\" />\n  <path d=\"M9 16v4\" />\n  <path d=\"M15 16v4\" />\n",
+  "arrow-up": "\n  <path d=\"M12 5l0 14\" />\n  <path d=\"M18 11l-6 -6\" />\n  <path d=\"M6 11l6 -6\" />\n",
+  "arrow-right": "\n  <path d=\"M5 12l14 0\" />\n  <path d=\"M13 18l6 -6\" />\n  <path d=\"M13 6l6 6\" />\n",
+  "copy": "\n  <path d=\"M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667l0 -8.666\" />\n  <path d=\"M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1\" />\n",
+  "settings-2": "\n  <path d=\"M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033\" />\n  <path d=\"M9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0\" />\n",
+  "history": "\n  <path d=\"M12 8l0 4l2 2\" />\n  <path d=\"M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5\" />\n",
+  "git-compare": "\n  <path d=\"M4 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" />\n  <path d=\"M16 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" />\n  <path d=\"M11 6h5a2 2 0 0 1 2 2v8\" />\n  <path d=\"M14 9l-3 -3l3 -3\" />\n  <path d=\"M13 18h-5a2 2 0 0 1 -2 -2v-8\" />\n  <path d=\"M10 15l3 3l-3 3\" />\n",
+  "database": "\n  <path d=\"M4 6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0\" />\n  <path d=\"M4 6v6a8 3 0 0 0 16 0v-6\" />\n  <path d=\"M4 12v6a8 3 0 0 0 16 0v-6\" />\n",
+  "file-code": "\n  <path d=\"M14 3v4a1 1 0 0 0 1 1h4\" />\n  <path d=\"M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2\" />\n  <path d=\"M10 13l-1 2l1 2\" />\n  <path d=\"M14 13l1 2l-1 2\" />\n",
+  "arrows-maximize": "\n  <path d=\"M16 4l4 0l0 4\" />\n  <path d=\"M14 10l6 -6\" />\n  <path d=\"M8 20l-4 0l0 -4\" />\n  <path d=\"M4 20l6 -6\" />\n  <path d=\"M16 20l4 0l0 -4\" />\n  <path d=\"M14 14l6 6\" />\n  <path d=\"M8 4l-4 0l0 4\" />\n  <path d=\"M4 4l6 6\" />\n",
+  "minus": "\n  <path d=\"M5 12l14 0\" />\n",
+  "focus-2": "\n  <path d=\"M11.5 12a.5 .5 0 1 0 1 0a.5 .5 0 1 0 -1 0\" fill=\"currentColor\" />\n  <path d=\"M5 12a7 7 0 1 0 14 0a7 7 0 1 0 -14 0\" />\n  <path d=\"M12 3l0 2\" />\n  <path d=\"M3 12l2 0\" />\n  <path d=\"M12 19l0 2\" />\n  <path d=\"M19 12l2 0\" />\n",
+  "plug-connected": "\n  <path d=\"M7 12l5 5l-1.5 1.5a3.536 3.536 0 1 1 -5 -5l1.5 -1.5\" />\n  <path d=\"M17 12l-5 -5l1.5 -1.5a3.536 3.536 0 1 1 5 5l-1.5 1.5\" />\n  <path d=\"M3 21l2.5 -2.5\" />\n  <path d=\"M18.5 5.5l2.5 -2.5\" />\n  <path d=\"M10 11l-2 2\" />\n  <path d=\"M13 14l-2 2\" />\n",
+  "lock": "\n  <path d=\"M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6\" />\n  <path d=\"M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0\" />\n  <path d=\"M8 11v-4a4 4 0 1 1 8 0v4\" />\n",
+  "check": "\n  <path d=\"M5 12l5 5l10 -10\" />\n",
+  "layout-sidebar-left-collapse": "\n  <path d=\"M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12\" />\n  <path d=\"M9 4v16\" />\n  <path d=\"M15 10l-2 2l2 2\" />\n",
+  "layout-sidebar-left-expand": "\n  <path d=\"M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12\" />\n  <path d=\"M9 4v16\" />\n  <path d=\"M14 10l2 2l-2 2\" />\n"
+}

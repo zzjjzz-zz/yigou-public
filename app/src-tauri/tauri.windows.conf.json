@@ -1,0 +1,27 @@
+{
+  "app": {
+    "windows": [{
+      "label": "main",
+      "title": "意构 · 网络工程桌面工作台",
+      "width": 1440,
+      "height": 900,
+      "minWidth": 1100,
+      "minHeight": 720,
+      "create": false,
+      "decorations": false
+    }]
+  },
+  "bundle": {
+    "targets": [
+      "nsis"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "displayLanguageSelector": false
+      }
+    }
+  }
+}

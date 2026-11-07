@@ -1,0 +1,53 @@
+[package]
+name = "yigou"
+version = "0.2.5"
+edition = "2024"
+description = "意构：网络设备工作台"
+license = "MIT"
+
+[lib]
+name = "yigou_core"
+
+[[bin]]
+name = "yigou"
+path = "src/main.rs"
+required-features = ["desktop"]
+
+[features]
+default = []
+desktop = ["dep:tauri", "dep:tauri-build"]
+
+[build-dependencies]
+tauri-build = { version = "2", optional = true , features = [] }
+
+[dependencies]
+tauri = { version = "2.12.5", optional = true , features = [] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+thiserror = "2"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+rusqlite = { version = "0.38", features = ["bundled"] }
+rig-core = { version = "=0.45.0", features = ["reqwest"] }
+rig-agent = "=0.45.0"
+futures = "0.3"
+keyring = { version = "3.6", features = ["apple-native", "windows-native", "sync-secret-service", "crypto-rust"] }
+aes-gcm = "0.10"
+base64 = "0.22"
+sha2 = "0.10"
+zeroize = { version = "1", features = ["derive"] }
+regex = "1"
+url = "2"
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.dev]
+debug = 0
+
+[profile.release]
+strip = true
+lto = "thin"
+codegen-units = 8
